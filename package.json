@@ -1,0 +1,32 @@
+{
+  "name": "slocker",
+  "version": "0.0.1",
+  "description": "docker event notifications in your slack channels ",
+  "main": "app.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhurlow/slocker.git"
+  },
+  "keywords": [
+    "docker",
+    "events",
+    "slack",
+    "notifications",
+    "team"
+  ],
+  "author": "Brian Hurlow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bhurlow/slocker/issues"
+  },
+  "homepage": "https://github.com/bhurlow/slocker#readme",
+  "dependencies": {
+    "dockerode": "^2.2.7",
+    "moment": "^2.10.6",
+    "slack-node": "^0.1.7",
+    "superagent": "^1.6.1"
+  }
+}
