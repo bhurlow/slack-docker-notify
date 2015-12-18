@@ -1,4 +1,4 @@
-# slocker
+# slack docker notify
 
 stream events from docker to your slack `#notifications` channel 
 
