@@ -1,2 +1,3 @@
 # slocker
-docker cluster notifications in your slack channels 
+
+stream events from docker to your slack `#notifications` channel 
