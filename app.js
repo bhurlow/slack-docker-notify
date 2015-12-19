@@ -54,7 +54,7 @@ function makeBody(msg) {
     channel: "#notifications",
     username: "dockerbot", 
     text: msg,
-    icon_emoji: ":ghost"
+    icon_emoji: ":ghost:"
   }
 }
 
