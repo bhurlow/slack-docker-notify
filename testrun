@@ -1,0 +1,16 @@
+#! /bin/bash
+
+for x in ca.pem cert.pem key.pem; do
+ echo "copying: $DOCKER_CERT_PATH/$x"
+ docker-machine scp -r $DOCKER_CERT_PATH/$x default:/tmp/docker-certs
+done
+
+docker run \
+  -it \
+  -e DOCKER_HOST=$(docker-machine ip default) \
+  -e DOCKER_PORT=2376 \
+  -e DOCKER_TLS_VERIFY=1 \
+  -e DOCKER_CERT_PATH=/tmp/docker-certs  \
+  -v /var/run/docker.sock:/tmp/docker.sock:ro \
+  -v /tmp/docker-certs:/tmp/docker-certs \
+  bhurlow/slack-docker-notify
