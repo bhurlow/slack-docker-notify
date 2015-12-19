@@ -7,7 +7,9 @@ stream events from docker to your slack `#notifications` channel
 
 ```
 docker run -d \
-  -e SLACK_WEBHOOK_URL $SLACK_WEBHOOK_URL \
+  -e SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL \
+  -v /var/run/docker.sock:/tmp/docker.sock:ro \
+  --name notify \ 
   bhurlow/slack-docker-notify 
 ```
 

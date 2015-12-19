@@ -1,5 +1,5 @@
-FROM node:latest
-ENV DEBUG='*'
+FROM bhurlow/node
+ENV DEBUG='slack-docker-notify*'
 ADD . /app
 WORKDIR /app
 RUN npm install

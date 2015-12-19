@@ -1,28 +1,20 @@
 'use strict'
+var debug = require('debug')('slack-docker-notify')
 var fs = require('fs')
 var https = require('https')
 var moment = require('moment')
 var request = require('superagent')
-var transform = require('./transform').transform
+var Docker = require('dockerode')
 
-var opts = {
-  host: '192.168.99.100',
-  port: process.env.DOCKER_PORT || 2376,
-  path: '/events', 
-  ca: fs.readFileSync('/Users/bh/.docker/machine/machines/default/ca.pem'),
-  cert: fs.readFileSync('/Users/bh/.docker/machine/machines/default/cert.pem'),
-  key: fs.readFileSync('/Users/bh/.docker/machine/machines/default/key.pem')
-}
+var docker = new Docker({socketPath: '/tmp/docker.sock'});
 
-https.request(opts, function(res) {
-  res.pipe(transform(function(chunk, done) {
-      let str = chunk.toString()
-      let obj = JSON.parse(str)
-      let plucked = dissoc(obj, 'timeNano')
-      sendEventToSlack(plucked)
-      done()
-  }))
-}).end();
+var ev = docker.getEvents(function(e, r) {
+  r.on('data', function(d) {
+    let event = d.toString()
+    event = JSON.parse(event)
+    sendEventToSlack(event)
+  })
+})
 
 function dissoc (obj, key) {
   delete obj[key]
@@ -44,6 +36,9 @@ function makeBody(msg) {
 }
 
 function sendEventToSlack(obj) {
+  debug('sending event to slack')
+  let url = process.env.SLACK_WEBHOOK_URL
+  if (!url)  return debug('must set $SLACK_WEBHOOK_URL env var') 
   let opts = {
     hostname: process.env.SLACK_WEBHOOK_URL,
     method: 'POST', 
@@ -55,7 +50,7 @@ function sendEventToSlack(obj) {
     .send(payload)
     .set('Accept', 'application/json')
     .end(function(err, res) {
-      console.log(res.text)
+      debug('slack responded: %s %s', res.status, res.text)
     })
 }
 
