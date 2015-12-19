@@ -29,7 +29,7 @@ function formatDockerEvent(obj) {
 function makeBody(msg) {
 	return {
     channel: "#notifications",
-    username: "webhookbot", 
+    username: "dockerbot", 
     text: msg,
     icon_emoji: ":ghost"
   }
